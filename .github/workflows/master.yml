@@ -48,7 +48,7 @@ jobs:
   #  steps:
   #    - uses: actions/checkout@v3
   #    - name: Install D compiler
-  #      uses: dlang-community/setup-dlang@v1
+  #      uses: dlang-community/setup-dlang@v2
   #      with:
   #        compiler: ${COMPILER}
   #    # テストをする場合は以下を実行
@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-latest
       - name: Run unit tests
@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-latest
       - name: Run unit tests
@@ -117,34 +117,21 @@ jobs:
         with:
           name: coverage-windows
           path: .cov
+          include-hidden-files: true
 
-  test-windows-x86_64-ldc-1_31:
-    name: test-windows-x86_64-ldc-1_31
+  # No. OS      ARCH    COMPILER   UT  DOC COV
+  #  6. Windows x86_64  ldc        o   x   x
+  test-windows-x86_64-ldc-latest:
+    name: test-windows-x86_64-ldc-latest
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
-          compiler: ldc-1.31.0
+          compiler: ldc-latest
       - name: Run unit tests
         run: rdmd ./.github/runner.d -a=x86_64 --mode=unit-test
-
-  # No. OS      ARCH    COMPILER   UT  DOC COV
-  #  6. Windows x86_64  ldc        o   x   x
-  # LDC1.32で動かなくなったので一旦停止します
-  # https://github.com/dlang-jp/Cookbook/issues/189
-  # test-windows-x86_64-ldc-latest:
-  #   name: test-windows-x86_64-ldc-latest
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Install D compiler
-  #       uses: dlang-community/setup-dlang@v1
-  #       with:
-  #         compiler: ldc-latest
-  #     - name: Run unit tests
-  #       run: rdmd ./.github/runner.d -a=x86_64 --mode=unit-test
 
   # No. OS      ARCH    COMPILER   UT  DOC COV
   #  7. Windows x86_64  dmd-master x   x   x   x
@@ -152,20 +139,18 @@ jobs:
 
   # No. OS      ARCH    COMPILER   UT  DOC COV
   #  8. Windows x86_64  ldc-master o   x   x
-  # LDC1.32で動かなくなったので一旦停止します
-  # https://github.com/dlang-jp/Cookbook/issues/189
-  # test-windows-x86_64-ldc-master:
-  #   name: test-windows-x86_64-ldc-master
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Install D compiler
-  #       uses: dlang-community/setup-dlang@v1
-  #       with:
-  #         compiler: ldc-master
-  #         gh_token: ${{ secrets.GITHUB_TOKEN }}
-  #     - name: Run unit tests
-  #       run: rdmd ./.github/runner.d -a=x86_64 --mode=unit-test
+  test-windows-x86_64-ldc-master:
+    name: test-windows-x86_64-ldc-master
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install D compiler
+        uses: dlang-community/setup-dlang@v2
+        with:
+          compiler: ldc-master
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run unit tests
+        run: rdmd ./.github/runner.d -a=x86_64 --mode=unit-test
 
   # No. OS      ARCH    COMPILER   UT  DOC COV
   #  9. Ubuntu  x86     dmd        x   x   x
@@ -179,7 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: ldc-latest
       - name: Install dependencies
@@ -205,7 +190,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-latest
       - name: Run unit tests
@@ -219,7 +204,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: ldc-latest
       - name: Run unit tests
@@ -236,6 +221,7 @@ jobs:
         with:
           name: coverage-linux
           path: .cov
+          include-hidden-files: true
 
   # No. OS      ARCH    COMPILER   UT  DOC COV
   # 15. Ubuntu  x86_64  dmd-master o   x   x
@@ -245,7 +231,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-master
       - name: Run unit tests
@@ -276,11 +262,11 @@ jobs:
   # 21. macOS   x86_64  dmd        o   x   x
   test-osx-x86_64-dmd-latest:
     name: test-osx-x86_64-dmd-latest
-    runs-on: macos-latest
+    runs-on: macos-13 # latest x86_64 image
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-latest
       - name: Run unit tests
@@ -294,7 +280,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install D compiler
-        uses: dlang-community/setup-dlang@v1
+        uses: dlang-community/setup-dlang@v2
         with:
           compiler: ldc-latest
       - name: Run unit tests
@@ -306,6 +292,7 @@ jobs:
         with:
           name: coverage-osx
           path: .cov
+          include-hidden-files: true
 
   # No. OS      ARCH    COMPILER   UT  DOC COV
   # 23. macOS   x86_64  dmd-master x   x   x
@@ -321,9 +308,8 @@ jobs:
     needs: [
       test-windows-x86-dmd-latest,
       test-windows-x86_64-dmd-latest,
-      test-windows-x86_64-ldc-1_31,
-      # test-windows-x86_64-ldc-latest,
-      # test-windows-x86_64-ldc-master,
+      test-windows-x86_64-ldc-latest,
+      test-windows-x86_64-ldc-master,
       test-linux-x86-ldc-latest,
       test-linux-x86_64-dmd-latest,
       test-linux-x86_64-ldc-latest,
@@ -361,13 +347,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: docs
+          path: docs
       - name: Deploy pages
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: docs
+        uses: peaceiris/actions-gh-pages@v3
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
           emptyCommits: false
           user_name: GitHub Actions Bot
           user_email: <>
